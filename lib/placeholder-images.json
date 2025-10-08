@@ -1,0 +1,76 @@
+{
+  "placeholderImages": [
+    {
+      "id": "deal-of-the-day-1",
+      "description": "Premium wireless noise-cancelling headphones on a stylish dark background.",
+      "imageUrl": "https://images.unsplash.com/photo-1598331668826-20cecc596b86?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHx3aXJlbGVzcyUyMGhlYWRwaG9uZXN8ZW58MHx8fHwxNzU5NzQ4MjAzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "wireless headphones"
+    },
+    {
+      "id": "electronics-1",
+      "description": "Sleek and modern smartwatch displaying a colorful watch face.",
+      "imageUrl": "https://images.unsplash.com/photo-1637160151663-a410315e4e75?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxzbWFydCUyMHdhdGNofGVufDB8fHx8MTc1OTc0MDkyOHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "smart watch"
+    },
+    {
+      "id": "electronics-2",
+      "description": "A powerful and lightweight laptop open on a minimalist desk.",
+      "imageUrl": "https://picsum.photos/seed/103/600/400",
+      "imageHint": "laptop desk"
+    },
+    {
+      "id": "electronics-3",
+      "description": "A compact drone hovering mid-air against a clear blue sky.",
+      "imageUrl": "https://images.unsplash.com/photo-1603517134915-6d6869e5641a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxkcm9uZSUyMHNreXxlbnwwfHx8fDE3NTk3MzM0NDZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "drone sky"
+    },
+    {
+      "id": "home-decor-1",
+      "description": "A set of three modern abstract art prints in black frames.",
+      "imageUrl": "https://images.unsplash.com/photo-1699465301322-362016624dd7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx3YWxsJTIwYXJ0fGVufDB8fHx8MTc1OTc4NDAwOXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "wall art"
+    },
+    {
+      "id": "home-decor-2",
+      "description": "A comfortable and stylish armchair in a well-lit living room.",
+      "imageUrl": "https://picsum.photos/seed/106/600/400",
+      "imageHint": "modern armchair"
+    },
+    {
+      "id": "home-decor-3",
+      "description": "An assortment of vibrant green succulents in ceramic pots.",
+      "imageUrl": "https://images.unsplash.com/photo-1709474264114-17b8539c79b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxzdWNjdWxlbnQlMjBwbGFudHN8ZW58MHx8fHwxNzU5NzIzMTM4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "succulent plants"
+    },
+    {
+      "id": "beauty-1",
+      "description": "A bottle of hydrating face serum with a dropper.",
+      "imageUrl": "https://images.unsplash.com/photo-1600428877878-1a0fd85beda8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxmYWNlJTIwc2VydW18ZW58MHx8fHwxNzU5NzY0Mzc3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "face serum"
+    },
+    {
+      "id": "beauty-2",
+      "description": "An organic skincare set including cream, oil, and mist.",
+      "imageUrl": "https://picsum.photos/seed/109/600/400",
+      "imageHint": "skincare set"
+    },
+    {
+      "id": "kitchen-1",
+      "description": "A high-speed blender filled with fresh fruits for a smoothie.",
+      "imageUrl": "https://picsum.photos/seed/110/600/400",
+      "imageHint": "kitchen blender"
+    },
+    {
+      "id": "kitchen-2",
+      "description": "A sleek, stainless steel espresso machine on a kitchen counter.",
+      "imageUrl": "https://images.unsplash.com/photo-1524686788093-aa1f9c0f7c4f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxlc3ByZXNzbyUyMG1hY2hpbmV8ZW58MHx8fHwxNzU5NzgxMDkzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "espresso machine"
+    },
+    {
+      "id": "fitness-1",
+      "description": "A rolled-up yoga mat next to a water bottle.",
+      "imageUrl": "https://images.unsplash.com/photo-1591291621060-89264efbeaed?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8eW9nYSUyMG1hdHxlbnwwfHx8fDE3NTk3NjE1OTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "yoga mat"
+    }
+  ]
+}

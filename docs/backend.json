@@ -1,0 +1,231 @@
+{
+  "entities": {
+    "Product": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Product",
+      "type": "object",
+      "description": "Represents a product listed on the affiliate deals portal.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the product.",
+          "format": "uuid"
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the product."
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed description of the product."
+        },
+        "price": {
+          "type": "number",
+          "description": "The price of the product."
+        },
+        "marketplace": {
+          "type": "string",
+          "description": "The marketplace where the product is sold (e.g., Amazon, Flipkart).",
+          "format": "enum",
+          "items": {
+            "type": "string"
+          }
+        },
+        "affiliateLink": {
+          "type": "string",
+          "description": "The affiliate link for the product."
+        },
+        "slides": {
+          "type": "array",
+          "description": "An array of media slides (images or videos) for the product.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "status": {
+          "type": "string",
+          "description": "The status of the product (e.g., Published, Draft, Archived)."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "The date and time the product was created.",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "The date and time the product was last updated.",
+          "format": "date-time"
+        },
+        "clicks": {
+          "type": "number",
+          "description": "The number of clicks the product has received."
+        },
+        "categoryId": {
+          "type": "string",
+          "description": "Reference to Category. (Relationship: Category 1:N Product)"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "price",
+        "marketplace",
+        "affiliateLink",
+        "status",
+        "createdAt",
+        "updatedAt",
+        "categoryId"
+      ]
+    },
+    "Category": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Category",
+      "type": "object",
+      "description": "Represents a category of products.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the category."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the category."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the category."
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ]
+    },
+    "Admin": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Admin",
+      "type": "object",
+      "description": "Represents an administrator of the affiliate deals portal.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the admin."
+        },
+        "email": {
+          "type": "string",
+          "description": "The email address of the admin.",
+          "format": "email"
+        }
+      },
+      "required": [
+        "id",
+        "email"
+      ]
+    },
+    "ClickEvent": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ClickEvent",
+      "type": "object",
+      "description": "Represents a click event on a product.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the click event."
+        },
+        "productId": {
+          "type": "string",
+          "description": "Reference to Product. (Relationship: Product 1:N ClickEvent)"
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "The date and time of the click event.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "productId",
+        "timestamp"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/products/{productId}",
+        "definition": {
+          "entityName": "Product",
+          "schema": {
+            "$ref": "#/backend/entities/Product"
+          },
+          "description": "Stores product information.  Includes 'categoryId' for potential category-based filtering and access control.",
+          "params": [
+            {
+              "name": "productId",
+              "description": "Unique identifier for the product."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/categories/{categoryId}",
+        "definition": {
+          "entityName": "Category",
+          "schema": {
+            "$ref": "#/backend/entities/Category"
+          },
+          "description": "Stores product categories.",
+          "params": [
+            {
+              "name": "categoryId",
+              "description": "Unique identifier for the category."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/products/{productId}/clickEvents/{clickEventId}",
+        "definition": {
+          "entityName": "ClickEvent",
+          "schema": {
+            "$ref": "#/backend/entities/ClickEvent"
+          },
+          "description": "Stores click event data for each product.",
+          "params": [
+            {
+              "name": "productId",
+              "description": "Unique identifier for the product."
+            },
+            {
+              "name": "clickEventId",
+              "description": "Unique identifier for the click event."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/roles_admin/{adminId}",
+        "definition": {
+          "entityName": "Admin",
+          "schema": {
+            "$ref": "#/backend/entities/Admin"
+          },
+          "description": "Documents in this collection signify that the user with the matching ID is an administrator.  Presence in this collection grants admin privileges.",
+          "params": [
+            {
+              "name": "adminId",
+              "description": "User ID of the administrator."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to support an affiliate deals portal, focusing on product listings, categories, and click event tracking.  Authorization Independence is achieved through denormalization.  Specifically, if category-level access control were needed, the `categoryId` in the `products` collection could be used in security rules without needing a `get()` call, although currently all access is public.  QAPs are supported through structural segregation: `products` and `categories` are in separate collections, allowing for efficient `list` operations with distinct security rules if needed (e.g., only admins can create/modify products, while read access is public). The `clickEvents` subcollection is kept simple for logging purposes, associated to products via path structure."
+  }
+}

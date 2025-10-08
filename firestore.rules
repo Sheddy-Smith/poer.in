@@ -1,0 +1,119 @@
+/**
+ * @fileoverview Firestore Security Rules for the affiliate deals portal.
+ *
+ * Core Philosophy:
+ * This ruleset prioritizes ease of access for prototyping, while enforcing
+ * authentication for write operations. It leans towards public read access
+ * for core data like products and categories. Admin roles are supported via
+ * the `/roles_admin/{adminId}` collection.
+ *
+ * Data Structure:
+ * - `/products/{productId}`: Stores product information.
+ * - `/categories/{categoryId}`: Stores product categories.
+ * - `/products/{productId}/clickEvents/{clickEventId}`: Stores click event data.
+ * - `/roles_admin/{adminId}`: Indicates admin status based on document existence.
+ *
+ * Key Security Decisions:
+ * - Products and Categories: Allow public read access (get, list) to facilitate
+ *   easy data consumption during prototyping.
+ * - Write Restrictions: Require authentication for all write operations (create,
+ *   update, delete) on products and categories. In a production environment,
+ *   more granular role-based access control would be implemented, likely
+ *   restricting writes to admins only.
+ * - Click Events:  Allow authenticated users to create click events, but deny
+ *   updates and deletes. This allows tracking clicks while preventing
+ *   modification or removal of click event data.
+ * - No User Listing:  Listing the contents of the `/roles_admin` collection is
+ *   denied to prevent unauthorized enumeration of admin accounts.
+ *
+ * Denormalization for Authorization:
+ * The `products` documents include a `categoryId` field, which could be used
+ * to implement category-level access control without needing to perform extra
+ * reads. Currently, this field is not actively used in the rules, but it
+ * provides a foundation for future access control enhancements.
+ *
+ * Structural Segregation:
+ * The separation of `products` and `categories` into distinct collections
+ * enables efficient `list` operations with potentially different security
+ * requirements.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * @description Grants public read access to products, but requires authentication for write access.
+     * @path /products/{productId}
+     * @allow (get, list): Any user can read product information.
+     * @allow (create, update, delete): Only authenticated users can create, update, or delete products.
+     * @deny  (create, update, delete): Unauthenticated users cannot modify product information.
+     * @principle Allows public reads for easy data consumption, but secures writes to prevent unauthorized modifications.
+     */
+    match /products/{productId} {
+      allow get, list: if true;
+      allow create: if isSignedIn();
+      allow update: if isSignedIn() && resource != null;
+      allow delete: if isSignedIn() && resource != null;
+    }
+
+    /**
+     * @description Grants public read access to categories, but requires authentication for write access.
+     * @path /categories/{categoryId}
+     * @allow (get, list): Any user can read category information.
+     * @allow (create, update, delete): Only authenticated users can create, update, or delete categories.
+     * @deny  (create, update, delete): Unauthenticated users cannot modify category information.
+     * @principle Allows public reads for easy data consumption, but secures writes to prevent unauthorized modifications.
+     */
+    match /categories/{categoryId} {
+      allow get, list: if true;
+      allow create: if isSignedIn();
+      allow update: if isSignedIn() && resource != null;
+      allow delete: if isSignedIn() && resource != null;
+    }
+
+    /**
+     * @description Allows authenticated users to create click events, but denies updates and deletes.
+     * @path /products/{productId}/clickEvents/{clickEventId}
+     * @allow (create): Only authenticated users can create click events.
+     * @deny  (update, delete): No one is allowed to update or delete click events.
+     * @principle  Logs click events for tracking purposes, while preventing modification or removal of the click event data.
+     */
+    match /products/{productId}/clickEvents/{clickEventId} {
+      allow get: if true;
+      allow list: if true;
+      allow create: if isSignedIn();
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    /**
+     * @description Grants read access to admin role documents, but denies listing to prevent enumeration.
+     *              Allows admins to create their own document to signal their role.
+     * @path /roles_admin/{adminId}
+     * @allow (get): Any user can check for the existence of an admin role.
+     * @allow (create): Only the user with the matching ID can create their admin role document.
+     * @deny (list): Listing of admin documents is not allowed.
+     * @deny (update, delete): Only the admin themselves can modify or remove their role.
+     * @principle Restricts access to admin role information and prevents unauthorized enumeration.
+     */
+    match /roles_admin/{adminId} {
+      allow get: if true;
+      allow list: if false;
+      allow create: if request.auth.uid == adminId;
+      allow update: if request.auth.uid == adminId && resource != null;
+      allow delete: if request.auth.uid == adminId && resource != null;
+    }
+
+    // =========================================================================
+    //  HELPER FUNCTIONS
+    // =========================================================================
+
+    /**
+     * @description Checks if the user is signed in.
+     * @return {boolean} True if the user is signed in, false otherwise.
+     */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+  }
+}
